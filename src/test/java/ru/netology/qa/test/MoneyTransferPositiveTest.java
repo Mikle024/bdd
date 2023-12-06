@@ -43,4 +43,17 @@ public class MoneyTransferPositiveTest {
         Assertions.assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
         Assertions.assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
     }
+
+    @Test
+    void shouldTransferFromFirstToSecondAmountMoreBalance() {
+        var amount = DataHelper.generateInvalidAmount(firstCardBalance);
+        var transferPage = dashboardPage.selectCardToTransfer(secondCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
+        transferPage.findErrorMessage("Ошибка! ");
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
+
+        Assertions.assertEquals(firstCardBalance, actualBalanceFirstCard);
+        Assertions.assertEquals(secondCardBalance, actualBalanceSecondCard);
+    }
 }
